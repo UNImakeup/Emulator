@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="800" prefWidth="1400" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <right>
+        <Canvas fx:id="canvas" height="800.0" onMouseClicked="#canvasClicked" width="800.0" BorderPane.alignment="CENTER" />
+    </right>
+    <left>
+        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="800.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <VBox prefHeight="150.0" prefWidth="500.0">
+                            <children>
+                                <ColorPicker fx:id="colorpicker" prefHeight="100.0" prefWidth="250.0">
+                                    <VBox.margin>
+                                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                    </VBox.margin></ColorPicker>
+                                <HBox fx:id="HBox" prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <Slider fx:id="sliderPenSize" onMouseReleased="#setPenSize" prefHeight="16.0" prefWidth="184.0">
+                                            <HBox.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </HBox.margin>
+                                        </Slider>
+                                        <Label fx:id="labelPenSize" text="1">
+                                            <HBox.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children></HBox>
+                                <ComboBox fx:id="comboBoxFigure" onAction="#setFigure" prefHeight="100.0" prefWidth="250.0">
+                                    <VBox.margin>
+                                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                    </VBox.margin>
+                                </ComboBox>
+                                <Button fx:id="clearCanvasButton" mnemonicParsing="false" onAction="#clearCanvas" text="Clear Canvas" />
+                            </children>
+                            <padding>
+                                <Insets left="20.0" top="20.0" />
+                            </padding>
+                        </VBox>
+                    </children></AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                    <children>
+                        <VBox prefHeight="300.0" prefWidth="500.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
+                            <children>
+                                <Label fx:id="quoteText" prefHeight="250.0" prefWidth="500.0" text="Label" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font name="Arial Italic" size="36.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="quoteTextSource" alignment="CENTER_RIGHT" maxHeight="200.0" maxWidth="500.0" text="Label" textAlignment="RIGHT">
+                                    <font>
+                                        <Font name="Arial Black" size="25.0" />
+                                    </font>
+                                </Label>
+                            </children></VBox>
+                    </children></AnchorPane>
+            </items>
+        </SplitPane>
+    </left>
+</BorderPane>
