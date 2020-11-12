@@ -239,7 +239,28 @@ public class Controller implements DroneCommander{
                         b = false;
                     }
                 }
-      }
+                break;
+            case"right":
+                boolean c=true;
+                while(c==true){
+                    System.out.println("movingthedronetotheright");
+                    moveUp(wap,0);
+                    if(cmd!="right"){
+                        c=false;
+                    }
+                }
+                break;
+            case"left":
+                boolean d=true;
+                while(d==true){
+                    System.out.print("movingthedronetotheleft");
+                    moveUp(yup,0);
+                    if(cmd!="left"){
+                        d=false;
+                    }
+                }
+
+        }
     }
 
     public void clearCanvas(ActionEvent actionEvent) {
