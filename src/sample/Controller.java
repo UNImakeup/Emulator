@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import sample.Circle;
 import sample.Figure;
 
@@ -43,6 +44,10 @@ public class Controller implements DroneCommander{
     //Bruger receiver og sender, for at den skal virke som packet sender.
     private UdpPackageReceiver receiver;
     private DatagramSocket sender;
+    private int x;
+    private int y;
+    private int xEnd = 200;
+    private int yEnd = 200;
 
     public void initialize()
     {
@@ -88,13 +93,13 @@ public class Controller implements DroneCommander{
     }
 
     public void canvasClicked(MouseEvent mouseEvent)  {
-        System.out.println("CanvasClick " + mouseEvent.getX() + ":" + mouseEvent.getY());
         //comboBoxFigure.hide();
         //Timer T = new Timer();
 
         //System.out.println(comboBoxFigure.getValue());
         //if (comboBoxFigure.getValue() != null) {
         //comboBoxFigure.setValue();
+
         if (activeFigure == null) {
             //activeFigure = comboBoxFigure.getValue().getCopy();
             activeFigure = new Circle();
@@ -114,6 +119,7 @@ public class Controller implements DroneCommander{
         //Thread.sleep(3000);
 
         //graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+
 
         TimerTask task= new TimerTask() {
             @Override
@@ -151,20 +157,20 @@ public class Controller implements DroneCommander{
         //System.out.println(comboBoxFigure.getValue());
         //if (comboBoxFigure.getValue() != null) {
         //comboBoxFigure.setValue();
-        if (activeFigure == null) {
+        graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
             //activeFigure = comboBoxFigure.getValue().getCopy();
             activeFigure = new Circle();
             //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            activeFigure.start = new Point((int) 208, (int) 232);
+            activeFigure.start = new Point((int) x, (int) y);
             System.out.println("activefigure start point: " + activeFigure.start.toString());
-        } else {
-            activeFigure.end = new Point((int) 342, (int) 365);
+
+            activeFigure.end = new Point((int) xEnd, (int) yEnd);
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
             System.out.println("and end point is: " + activeFigure.end.toString());
             //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
-            activeFigure = null;
-        }
+            //activeFigure = null;
+
         //Thread.sleep(3000);
         //TimeUnit.SECONDS.sleep(4);
         //Thread.sleep(3000);
@@ -172,21 +178,30 @@ public class Controller implements DroneCommander{
         //graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
 
 
-        TimerTask task= new TimerTask() {
-            @Override
-            public void run() {
-                graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-            }
-        };
-        Timer timer = new Timer();
-        timer.schedule(task, 3000);
+    }
 
+    public void moveUp(int xUp, int yUp){
+
+            //activeFigure = comboBoxFigure.getValue().getCopy();
+        graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+            activeFigure = new Circle();
+            //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            activeFigure.start = new Point((int) x + xUp, (int) y + yUp);
+            System.out.println("activefigure start point: " + activeFigure.start.toString());
+
+            activeFigure.end = new Point((int) xEnd + xUp, (int) yEnd + yUp);
+            System.out.println("activeFigure start point is: " + activeFigure.start.toString());
+            System.out.println("and end point is: " + activeFigure.end.toString());
+            //canvasFigures.add(activeFigure);
+            drawActiveFigure(activeFigure);
+            //activeFigure = null;
 
 
     }
 
     private void drawActiveFigure(Figure activeFigure) {
-        graphicsContext.setStroke(colorpicker.getValue());
+        //graphicsContext.setStroke(colorpicker.getValue());
+        graphicsContext.setStroke(Color.TURQUOISE);
         activeFigure.draw(graphicsContext);
     }
 
@@ -194,11 +209,21 @@ public class Controller implements DroneCommander{
     {
         switch (cmd){
             case "w":
-                System.out.println("moving the drone up");
+                System.out.println("creating the drone");
                 drawFigure();
                 break;
-            case "s":
-                System.out.println("moving the dorn down");
+                case "up":
+                    boolean a = true;
+                    while(a==true) {
+                        System.out.println("moving the drone up");
+                        moveUp(0, -10);
+                        if(cmd!="up"){
+                            a = false;
+                        }
+                    }
+                break;
+            case "down":
+
         }
     }
 
