@@ -91,7 +91,7 @@ public class Controller implements DroneCommander{
     public void setFigure(ActionEvent actionEvent) {
 
     }
-/*
+
     public void canvasClicked(MouseEvent mouseEvent)  {
         //comboBoxFigure.hide();
         //Timer T = new Timer();
@@ -147,7 +147,7 @@ public class Controller implements DroneCommander{
 
          */
 
-    //}
+    }
 
 
     public void drawFigure(){
@@ -186,13 +186,15 @@ public class Controller implements DroneCommander{
             //activeFigure = comboBoxFigure.getValue().getCopy();
         graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
             activeFigure = new Circle();
-            //x+=xUp;
-            //y += yUp;
+            x+=xUp;
+            y += yUp;
+            xEnd += xUp;
+            yEnd += yUp;
             //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            activeFigure.start = new Point((int) x + xUp, (int) y + yUp);
+            activeFigure.start = new Point((int) x, (int) y);
             System.out.println("activefigure start point: " + activeFigure.start.toString());
 
-            activeFigure.end = new Point((int) xEnd + xUp, (int) yEnd + yUp);
+            activeFigure.end = new Point((int) xEnd, (int) yEnd);
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
             System.out.println("and end point is: " + activeFigure.end.toString());
             //canvasFigures.add(activeFigure);
@@ -219,7 +221,7 @@ public class Controller implements DroneCommander{
                 case "up":
                     boolean a = true;
                     while(a==true) {
-                        yup=yup-10;
+                        //yup=yup-10;
                         System.out.println("moving the drone up");
                         moveUp(0, yup);
                         if(cmd!="down"){
@@ -230,16 +232,14 @@ public class Controller implements DroneCommander{
             case "down":
                 boolean b = true;
                 while(b==true) {
-                    wap=wap+10;
+                    //wap=wap+10;
                     System.out.println("moving the drone down");
                     moveUp(0, wap);
                     if(cmd!="down"){
                         b = false;
                     }
                 }
-
-
-        }
+      }
     }
 
     public void clearCanvas(ActionEvent actionEvent) {
