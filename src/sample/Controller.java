@@ -15,7 +15,10 @@ import javafx.scene.paint.Color;
 import sample.Circle;
 import sample.Figure;
 
+import javax.sound.sampled.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -184,6 +187,15 @@ public class Controller implements DroneCommander{
     public void moveUp(int xUp, int yUp){
 
             //activeFigure = comboBoxFigure.getValue().getCopy();
+        try {
+            playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
         graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
             activeFigure = new Circle();
             x+=xUp;
@@ -283,9 +295,14 @@ public class Controller implements DroneCommander{
         if( b.equals(a)){
             drawFigure();
         }
-
-
-
-
     }
+
+    void playSound(String soundFile) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+        File f = new File(soundFile);
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioIn);
+        clip.start();
+    }
+
 }
