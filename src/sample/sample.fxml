@@ -8,7 +8,10 @@
 
 <BorderPane prefHeight="800" prefWidth="1400" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <right>
-        <Canvas fx:id="canvas" height="800.0" onMouseClicked="#canvasClicked" width="800.0" BorderPane.alignment="CENTER" />
+        <Canvas fx:id="canvas" height="800.0" onMouseClicked="#canvasClicked" width="1000.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></Canvas>
     </right>
     <left>
         <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="800.0" prefWidth="600.0" BorderPane.alignment="CENTER">

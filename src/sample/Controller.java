@@ -53,7 +53,9 @@ public class Controller implements DroneCommander{
     private int y;
     private int xEnd = x+200;
     private int yEnd = y+200;
-    private int life = 10;
+    private int life = 2;
+    private int yup=-10; //Behøver nok ikke variable, bare skrive tallene hvor metoden køres.
+    private int wap = 10; //Same
 
     private boolean l = true;
 
@@ -104,6 +106,7 @@ public class Controller implements DroneCommander{
 
     }
 
+    //Kan slettes, men måske bruge timeren et andet sted.
     public void canvasClicked(MouseEvent mouseEvent)  {
         //comboBoxFigure.hide();
         //Timer T = new Timer();
@@ -163,15 +166,8 @@ public class Controller implements DroneCommander{
 
 
     public void drawFigure(){
-        //System.out.println("CanvasClick " + mouseEvent.getX() + ":" + mouseEvent.getY());
-        //comboBoxFigure.hide();
-        //Timer T = new Timer();
-
-        //System.out.println(comboBoxFigure.getValue());
-        //if (comboBoxFigure.getValue() != null) {
-        //comboBoxFigure.setValue();
-        graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-        setSurroundings();
+            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            setSurroundings();
             //activeFigure = comboBoxFigure.getValue().getCopy();
             activeFigure = new Circle();
             //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
@@ -183,33 +179,23 @@ public class Controller implements DroneCommander{
             System.out.println("and end point is: " + activeFigure.end.toString());
             //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
-            //activeFigure = null;
-
-        //Thread.sleep(3000);
-        //TimeUnit.SECONDS.sleep(4);
-        //Thread.sleep(3000);
-
-        //graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-
-
     }
 
+    //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
     public void moveUp(int xUp, int yUp){
-
-            //activeFigure = comboBoxFigure.getValue().getCopy();
-        try {
-            playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-        graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-        setSurroundings();
+            try {
+                playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav"); //Have helikopter lyd i stedet.
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
+            setSurroundings();
             activeFigure = new Circle();
-            x+=xUp;
+            x += xUp;
             y += yUp;
             xEnd += xUp;
             yEnd += yUp;
@@ -223,8 +209,8 @@ public class Controller implements DroneCommander{
             //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
 
-
-            if(activeFigure.end.y > 650 && l==true){
+//Kunne være egen metode, for overskuelighed. Kunne have eget navn og genbruges. Bryde metoderne ned i så små som muligt. Overskuelighed. Man ved hvad metoden gør.
+            if (activeFigure.end.y > 650 && l == true) {
 
                 life -= 1;
                 //Lives.setText(new String(String.valueOf(life)));
@@ -234,76 +220,87 @@ public class Controller implements DroneCommander{
                 //Skal måske lave a la quoteupdater
             }
             //l = true;
-            if (activeFigure.end.y < 650){
+            if (activeFigure.end.y < 650) {
                 l = true;
             }
-
-
-            //activeFigure = null;
-
-
-    }
-
+        }
 
     private void drawActiveFigure(Figure activeFigure) {
         //graphicsContext.setStroke(colorpicker.getValue());
         graphicsContext.setStroke(Color.TURQUOISE);
         activeFigure.draw(graphicsContext);
     }
-    int yup=-10;
-    int wap = 10;
+
+
+
+
     public void droneCommand(String cmd)
     {
-        switch (cmd){
-            case "w":
-                System.out.println("creating the drone");
-                drawFigure();
-                break;
+        if(life > 0) {
+            switch (cmd) {
+                case "w":
+                    System.out.println("creating the drone");
+                    drawFigure();
+                    break;
                 case "up":
                     boolean a = true;
-                    while(a==true) {
+                    while (a == true) {
                         //yup=yup-10;
                         System.out.println("moving the drone up");
                         moveUp(0, yup);
-                        if(cmd!="down"){
+                        if (cmd != "down") {
                             a = false;
                         }
                     }
-                break;
-            case "down":
-                boolean b = true;
-                while(b==true) {
-                    //wap=wap+10;
-                    System.out.println("moving the drone down");
-                    moveUp(0, wap);
-                    if(cmd!="down"){
-                        b = false;
+                    break;
+                case "down":
+                    boolean b = true;
+                    while (b == true) {
+                        //wap=wap+10;
+                        System.out.println("moving the drone down");
+                        moveUp(0, wap);
+                        if (cmd != "down") {
+                            b = false;
+                        }
                     }
-                }
-                break;
-            case"right":
-                boolean c=true;
-                while(c==true){
-                    System.out.println("movingthedronetotheright");
-                    moveUp(wap,0);
-                    if(cmd!="right"){
-                        c=false;
+                    break;
+                case "right":
+                    boolean c = true;
+                    while (c == true) {
+                        System.out.println("movingthedronetotheright");
+                        moveUp(wap, 0);
+                        if (cmd != "right") {
+                            c = false;
+                        }
                     }
-                }
-                break;
-            case"left":
-                boolean d=true;
-                while(d==true){
-                    System.out.print("movingthedronetotheleft");
-                    moveUp(yup,0);
-                    if(cmd!="left"){
-                        d=false;
+                    break;
+                case "left":
+                    boolean d = true;
+                    while (d == true) {
+                        System.out.print("movingthedronetotheleft");
+                        moveUp(yup, 0);
+                        if (cmd != "left") {
+                            d = false;
+                        }
                     }
-                }
 
+            }
+        }else{
+            //køre metode der skriver game over.
+            gameOver();
         }
     }
 
+    public void gameOver(){
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
+        graphicsContext.setFill(Color.AQUA);
+        graphicsContext.fillRect(0,0, canvas.getWidth(), canvas.getHeight()); //Burde måske spille lyd; you crashed into the water, oh no.
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2, canvas.getHeight()/2);
+        Lives.setVisible(false);
+    }
+
+    //Kan nok bare slettes.
     public void clearCanvas(ActionEvent actionEvent) {
         //graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
         //clearCanvasButton.setCancelButton(true); //Tror bare vi starter med denne. Som en start butyon der sætter gang i emulatoren. Behøver man måske ikke. Ved bare ikke rigtig. Lad os prøve at sout commands her.

@@ -6,9 +6,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="800" prefWidth="1400" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane prefHeight="800" prefWidth="1400" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <right>
-        <Canvas fx:id="canvas" height="800.0" onMouseClicked="#canvasClicked" width="800.0" BorderPane.alignment="CENTER" />
+        <Canvas fx:id="canvas" height="800.0" onMouseClicked="#canvasClicked" width="1000.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></Canvas>
     </right>
     <left>
         <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="800.0" prefWidth="600.0" BorderPane.alignment="CENTER">
@@ -17,29 +20,8 @@
                     <children>
                         <VBox prefHeight="150.0" prefWidth="500.0">
                             <children>
-                                <ColorPicker fx:id="colorpicker" prefHeight="100.0" prefWidth="250.0">
-                                    <VBox.margin>
-                                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                    </VBox.margin></ColorPicker>
-                                <HBox fx:id="HBox" prefHeight="100.0" prefWidth="200.0">
-                                    <children>
-                                        <Slider fx:id="sliderPenSize" onMouseReleased="#setPenSize" prefHeight="16.0" prefWidth="184.0">
-                                            <HBox.margin>
-                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                            </HBox.margin>
-                                        </Slider>
-                                        <Label fx:id="labelPenSize" text="1">
-                                            <HBox.margin>
-                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                    </children></HBox>
-                                <ComboBox fx:id="comboBoxFigure" onAction="#setFigure" prefHeight="100.0" prefWidth="250.0">
-                                    <VBox.margin>
-                                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                    </VBox.margin>
-                                </ComboBox>
-                                <Button fx:id="clearCanvasButton" mnemonicParsing="false" onAction="#clearCanvas" text="Clear Canvas" />
+                                <HBox fx:id="HBox" prefHeight="100.0" prefWidth="200.0" />
+                        <Label fx:id="Lives" text="Label" />
                             </children>
                             <padding>
                                 <Insets left="20.0" top="20.0" />
