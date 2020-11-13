@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import sample.Circle;
 import sample.Figure;
 
@@ -37,6 +38,7 @@ public class Controller implements DroneCommander{
     public Label quoteTextSource;
     public Button clearCanvasButton;
     public javafx.scene.layout.HBox HBox;
+    public Label Lives;
     private GraphicsContext graphicsContext;
 
     ArrayList<Figure> canvasFigures = new ArrayList<>();
@@ -51,6 +53,9 @@ public class Controller implements DroneCommander{
     private int y;
     private int xEnd = x+200;
     private int yEnd = y+200;
+    private int life = 10;
+
+    private boolean l = true;
 
     public void initialize()
     {
@@ -58,9 +63,13 @@ public class Controller implements DroneCommander{
         //Fra drawing on canvas
         System.out.println("ready!");
 
-        comboBoxFigure.getItems().addAll(new Circle());
+//        comboBoxFigure.getItems().addAll(new Circle());
 
         graphicsContext = canvas.getGraphicsContext2D();
+
+
+            setSurroundings();
+            Lives.setText(String.valueOf(life));
 
 
 
@@ -80,17 +89,17 @@ public class Controller implements DroneCommander{
 
 
     }
-
+//Bruger vi ikke
     public void updateQuote(String quote, String source)
     {
         quoteText.setText(quote);
         quoteTextSource.setText(source);
     }
-
+//Bruger vi ikke
     public void setPenSize(MouseEvent mouseEvent) {
         labelPenSize.setText(""+(int)sliderPenSize.getValue());
     }
-
+//Tror ikke vi bruger den
     public void setFigure(ActionEvent actionEvent) {
 
     }
@@ -162,6 +171,7 @@ public class Controller implements DroneCommander{
         //if (comboBoxFigure.getValue() != null) {
         //comboBoxFigure.setValue();
         graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+        setSurroundings();
             //activeFigure = comboBoxFigure.getValue().getCopy();
             activeFigure = new Circle();
             //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
@@ -197,6 +207,7 @@ public class Controller implements DroneCommander{
             e.printStackTrace();
         }
         graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+        setSurroundings();
             activeFigure = new Circle();
             x+=xUp;
             y += yUp;
@@ -211,10 +222,28 @@ public class Controller implements DroneCommander{
             System.out.println("and end point is: " + activeFigure.end.toString());
             //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
+
+
+            if(activeFigure.end.y > 650 && l==true){
+
+                life -= 1;
+                //Lives.setText(new String(String.valueOf(life)));
+                System.out.println(life + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                l = false;
+                //Lives.setText(String.valueOf(life));
+                //Skal måske lave a la quoteupdater
+            }
+            //l = true;
+            if (activeFigure.end.y < 650){
+                l = true;
+            }
+
+
             //activeFigure = null;
 
 
     }
+
 
     private void drawActiveFigure(Figure activeFigure) {
         //graphicsContext.setStroke(colorpicker.getValue());
@@ -303,6 +332,20 @@ public class Controller implements DroneCommander{
         Clip clip = AudioSystem.getClip();
         clip.open(audioIn);
         clip.start();
+    }
+
+    void setSurroundings(){
+        graphicsContext.setFill(Color.YELLOW);
+        graphicsContext.fillOval(-50,-50,150,150);
+        graphicsContext.setFill(Color.BLACK);
+        graphicsContext.fillOval(25,40,10,10);
+        graphicsContext.fillOval(45,30,10,10);
+        graphicsContext.fillArc(37, 15, 30, 60, 210, 150, ArcType.OPEN);
+        graphicsContext.setFill(Color.AQUA);
+        graphicsContext.fillRect(0,600,canvas.getWidth(),canvas.getHeight() - 600); //water
+        graphicsContext.setFill(Color.BISQUE);
+        graphicsContext.fillRect(0,600,canvas.getWidth(),50); //Sand
+
     }
 
 }
