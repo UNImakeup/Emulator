@@ -225,6 +225,19 @@ public class Controller implements DroneCommander{
             //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
 
+            if(activeFigure.start.x < 150-50 && activeFigure.start.y < 150-50){
+                try {
+                    playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav"); //Have helikopter lyd i stedet.
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                }
+                //Lav også mund om, sæt original til rektangel
+            }
+
 //Kunne være egen metode, for overskuelighed. Kunne have eget navn og genbruges. Bryde metoderne ned i så små som muligt. Overskuelighed. Man ved hvad metoden gør.
             if (activeFigure.end.y > 650 && l == true) {
 
