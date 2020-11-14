@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import javafx.scene.text.Font;
 
 import javax.sound.sampled.*;
 import java.awt.*;
@@ -45,6 +46,9 @@ public class Controller implements DroneCommander{
     public Label Lives;
     public AnchorPane anchorPane;
     public GridPane gridPane;
+    public GridPane gridPane1;
+    public GridPane gridPane2;
+    public GridPane gridPane3;
     private GraphicsContext graphicsContext;
 
     ArrayList<Figure> canvasFigures = new ArrayList<>();
@@ -78,8 +82,9 @@ public class Controller implements DroneCommander{
             setSurroundings();
             //Lives.setText(String.valueOf(life));
 
-        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 0, 0);
-        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0);
+        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane1);
+        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane2);
+        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane3);
 
 
 
@@ -203,15 +208,6 @@ public class Controller implements DroneCommander{
 
     //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
     public void moveUp(int xUp, int yUp){
-            try {
-                playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav"); //Have helikopter lyd i stedet.
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LineUnavailableException e) {
-                e.printStackTrace();
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            }
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
             setSurroundings();
             activeFigure = new Circle();
@@ -236,6 +232,17 @@ public class Controller implements DroneCommander{
                 //Lives.setText(new String(String.valueOf(life)));
                 System.out.println(life + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 l = false;
+
+                switch (life){
+                    case(2):
+                        gridPane3.setVisible(false);
+                        break;
+                    case(1):
+                        gridPane2.setVisible(false);
+
+                }
+
+                //gridPane.setVisible(false);
 
                 //Lives.setText(String.valueOf(life));
                 //Skal måske lave a la quoteupdater
@@ -324,10 +331,21 @@ public class Controller implements DroneCommander{
         graphicsContext.setFill(Color.AQUA);
         graphicsContext.fillRect(0,0, canvas.getWidth(), canvas.getHeight()); //Burde måske spille lyd; you crashed into the water, oh no.
         graphicsContext.setFill(Color.BLACK);
-        graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2, canvas.getHeight()/2);
+        graphicsContext.setFont(new Font("arial", 20));
+        graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2-150, canvas.getHeight()/2);
+        gridPane1.setVisible(false);
+        try {
+            playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav"); //Have helikopter lyd i stedet.
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
         //Lives.setVisible(false);
         //removeImage(1);
-        gridPane.setVisible(false);
+        //gridPane.setVisible(false);
     }
 
     //Kan nok bare slettes.
@@ -375,7 +393,7 @@ public class Controller implements DroneCommander{
 
     }
 
-    void showImage(String img, int r1, int r2) throws FileNotFoundException {
+    void showImage(String img, int r1, int r2, GridPane g) throws FileNotFoundException {
         Image image = new Image(new FileInputStream(img));
 
 
@@ -390,7 +408,7 @@ public class Controller implements DroneCommander{
         //setting the fit height and width of the image view
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
-        gridPane.add(imageView, r1, r2);
+        g.add(imageView, r1, r2);
         imageView.setVisible(true);
 
     }
