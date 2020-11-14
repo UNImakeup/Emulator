@@ -1,10 +1,8 @@
 package sample;
 
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -64,8 +62,8 @@ public class Controller implements DroneCommander{
     private int xEnd = x+200;
     private int yEnd = y+200;
     private int life = 3;
-    private int yup=-10; //Behøver nok ikke variable, bare skrive tallene hvor metoden køres.
-    private int wap = 10; //Same
+    private int yup=-5; //Behøver nok ikke variable, bare skrive tallene hvor metoden køres.
+    private int wap = 5; //Same
 
     private boolean l = true;
 
@@ -189,25 +187,43 @@ public class Controller implements DroneCommander{
 
     }
 
-
+boolean droneDrawn = false;
     public void drawFigure(){
-            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        if (droneDrawn == false) {
+            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Måske som metode.
             setSurroundings(false);
-            //activeFigure = comboBoxFigure.getValue().getCopy();
             activeFigure = new Circle();
-            //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            activeFigure.start = new Point((int) x, (int) y);
-            System.out.println("activefigure start point: " + activeFigure.start.toString());
+            /*
+            x += 50;
+            y += 50;
+            xEnd += 50;
+            yEnd += 50;
 
+             */
+            activeFigure.start = new Point((int) x, (int) y);
             activeFigure.end = new Point((int) xEnd, (int) yEnd);
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
             System.out.println("and end point is: " + activeFigure.end.toString());
-            //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
+            droneDrawn = true;
+        }
     }
-
+    boolean sunHitOnce = false;
     //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
-    public void moveUp(int xUp, int yUp){
+    public void move(int xUp, int yUp){
+        if(droneDrawn == true) {
+        /*
+        try {
+            playSound("C:\\Users\\depay\\Downloads\\b.wav"); //Have helikopter lyd i stedet.
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+
+             */
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
             setSurroundings(false);
             activeFigure = new Circle();
@@ -215,17 +231,18 @@ public class Controller implements DroneCommander{
             y += yUp;
             xEnd += xUp;
             yEnd += yUp;
-            //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
             activeFigure.start = new Point((int) x, (int) y);
-            System.out.println("activefigure start point: " + activeFigure.start.toString());
-
             activeFigure.end = new Point((int) xEnd, (int) yEnd);
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
             System.out.println("and end point is: " + activeFigure.end.toString());
-            //canvasFigures.add(activeFigure);
             drawActiveFigure(activeFigure);
 
-            if(activeFigure.start.x < 150-50 && activeFigure.start.y < 150-50){
+            //kunne være i hit sun metode
+
+            if (activeFigure.start.x <= 80 && activeFigure.start.y <= 80 && sunHitOnce == false) {
+                //Laver mund om
+                setSurroundings(true);
+
                 try {
                     playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav"); //Have helikopter lyd i stedet.
                 } catch (IOException e) {
@@ -235,8 +252,13 @@ public class Controller implements DroneCommander{
                 } catch (UnsupportedAudioFileException e) {
                     e.printStackTrace();
                 }
-                //Lav også mund om, sæt original til rektangel
-               setSurroundings(true);
+                System.out.println("you hit the SUN MY BROTHER!!!!!!!!!!!!!!!!!!");
+                        sunHitOnce = true;
+
+            }
+
+            if (activeFigure.start.x > 80 | activeFigure.start.y > 80) {
+                sunHitOnce = false;
             }
 
 //Kunne være egen metode, for overskuelighed. Kunne have eget navn og genbruges. Bryde metoderne ned i så små som muligt. Overskuelighed. Man ved hvad metoden gør.
@@ -246,32 +268,31 @@ public class Controller implements DroneCommander{
                 //Lives.setText(new String(String.valueOf(life)));
                 System.out.println(life + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 l = false;
+                if(life > 0) {
+                    try {
+                        playSound("C:\\Users\\depay\\Downloads\\blob.wav"); //Have helikopter lyd i stedet.
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (LineUnavailableException e) {
+                        e.printStackTrace();
+                    } catch (UnsupportedAudioFileException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                switch (life){
-                    case(2):
+                switch (life) {
+                    case (2):
                         gridPane3.setVisible(false);
                         break;
-                    case(1):
+                    case (1):
                         gridPane2.setVisible(false);
 
                 }
-
-                //gridPane.setVisible(false);
-
-                //Lives.setText(String.valueOf(life));
-                //Skal måske lave a la quoteupdater
-                /*
-                if(life < 3) {
-                    removeImage(life - 1);
-                }
-
-                 */
             }
-
-            //l = true;
             if (activeFigure.end.y < 650) {
                 l = true;
             }
+        }
         }
 
     private void drawActiveFigure(Figure activeFigure) {
@@ -282,7 +303,7 @@ public class Controller implements DroneCommander{
 
 
 
-
+boolean gameOver = false;
     public void droneCommand(String cmd)
     {
         if(life > 0) {
@@ -296,7 +317,7 @@ public class Controller implements DroneCommander{
                     while (a == true) {
                         //yup=yup-10;
                         System.out.println("moving the drone up");
-                        moveUp(0, yup);
+                        move(0, yup);
                         if (cmd != "down") {
                             a = false;
                         }
@@ -307,7 +328,7 @@ public class Controller implements DroneCommander{
                     while (b == true) {
                         //wap=wap+10;
                         System.out.println("moving the drone down");
-                        moveUp(0, wap);
+                        move(0, wap);
                         if (cmd != "down") {
                             b = false;
                         }
@@ -317,7 +338,7 @@ public class Controller implements DroneCommander{
                     boolean c = true;
                     while (c == true) {
                         System.out.println("movingthedronetotheright");
-                        moveUp(wap, 0);
+                        move(wap, 0);
                         if (cmd != "right") {
                             c = false;
                         }
@@ -327,7 +348,7 @@ public class Controller implements DroneCommander{
                     boolean d = true;
                     while (d == true) {
                         System.out.print("movingthedronetotheleft");
-                        moveUp(yup, 0);
+                        move(yup, 0);
                         if (cmd != "left") {
                             d = false;
                         }
@@ -336,7 +357,10 @@ public class Controller implements DroneCommander{
             }
         }else{
             //køre metode der skriver game over.
-            gameOver();
+            if(gameOver == false) {
+                gameOver();
+                gameOver = true;
+            }
         }
     }
 
@@ -348,8 +372,9 @@ public class Controller implements DroneCommander{
         graphicsContext.setFont(new Font("arial", 20));
         graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2-150, canvas.getHeight()/2);
         gridPane1.setVisible(false);
+
         try {
-            playSound("C:\\Users\\depay\\Downloads\\MyLinkedList\\sound\\yes.wav"); //Have helikopter lyd i stedet.
+            playSound("C:\\Users\\depay\\Downloads\\dead.wav"); //Have helikopter lyd i stedet.
         } catch (IOException e) {
             e.printStackTrace();
         } catch (LineUnavailableException e) {
@@ -357,6 +382,7 @@ public class Controller implements DroneCommander{
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
+
         //Lives.setVisible(false);
         //removeImage(1);
         //gridPane.setVisible(false);
