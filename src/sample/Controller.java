@@ -1,31 +1,35 @@
 package sample;
 
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
-import sample.Circle;
-import sample.Figure;
 
 import javax.sound.sampled.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class Controller implements DroneCommander{
 
@@ -39,6 +43,8 @@ public class Controller implements DroneCommander{
     public Button clearCanvasButton;
     public javafx.scene.layout.HBox HBox;
     public Label Lives;
+    public AnchorPane anchorPane;
+    public GridPane gridPane;
     private GraphicsContext graphicsContext;
 
     ArrayList<Figure> canvasFigures = new ArrayList<>();
@@ -53,14 +59,13 @@ public class Controller implements DroneCommander{
     private int y;
     private int xEnd = x+200;
     private int yEnd = y+200;
-    private int life = 2;
+    private int life = 3;
     private int yup=-10; //Behøver nok ikke variable, bare skrive tallene hvor metoden køres.
     private int wap = 10; //Same
 
     private boolean l = true;
 
-    public void initialize()
-    {
+    public void initialize() throws FileNotFoundException {
         // runs when application GUI is ready
         //Fra drawing on canvas
         System.out.println("ready!");
@@ -71,7 +76,10 @@ public class Controller implements DroneCommander{
 
 
             setSurroundings();
-            Lives.setText(String.valueOf(life));
+            //Lives.setText(String.valueOf(life));
+
+        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 0, 0);
+        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0);
 
 
 
@@ -81,6 +89,18 @@ public class Controller implements DroneCommander{
         receiver = new UdpPackageReceiver(loggedPackages, 6000, this);
         new Thread(receiver).start(); //Starter ss thread. Den skal altså køre i sin egen seperate thread. Serveren og applicationen kører i hver sin thread. For at køre i en thread skal man følge nogle regler, der er beskrevet i en interface der bruges.
         //receiveUdpMessage();
+
+        /*
+        Task remove = new Task<Void>() {
+            @Override public Void call() {
+                gridPane.getChildren().remove(1);
+                return null;
+            }
+        };
+
+        new Thread(remove).start();
+
+         */
 
         //create udp sender
         try {
@@ -216,9 +236,17 @@ public class Controller implements DroneCommander{
                 //Lives.setText(new String(String.valueOf(life)));
                 System.out.println(life + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 l = false;
+
                 //Lives.setText(String.valueOf(life));
                 //Skal måske lave a la quoteupdater
+                /*
+                if(life < 3) {
+                    removeImage(life - 1);
+                }
+
+                 */
             }
+
             //l = true;
             if (activeFigure.end.y < 650) {
                 l = true;
@@ -297,7 +325,9 @@ public class Controller implements DroneCommander{
         graphicsContext.fillRect(0,0, canvas.getWidth(), canvas.getHeight()); //Burde måske spille lyd; you crashed into the water, oh no.
         graphicsContext.setFill(Color.BLACK);
         graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2, canvas.getHeight()/2);
-        Lives.setVisible(false);
+        //Lives.setVisible(false);
+        //removeImage(1);
+        gridPane.setVisible(false);
     }
 
     //Kan nok bare slettes.
@@ -345,4 +375,23 @@ public class Controller implements DroneCommander{
 
     }
 
+    void showImage(String img, int r1, int r2) throws FileNotFoundException {
+        Image image = new Image(new FileInputStream(img));
+
+
+        //Setting the image view
+        ImageView imageView = new ImageView(image);
+
+
+        //Setting the position of the image
+        imageView.setX(0);
+        imageView.setY(0);
+
+        //setting the fit height and width of the image view
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+        gridPane.add(imageView, r1, r2);
+        imageView.setVisible(true);
+
+    }
 }
