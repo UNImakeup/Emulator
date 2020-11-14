@@ -79,7 +79,7 @@ public class Controller implements DroneCommander{
         graphicsContext = canvas.getGraphicsContext2D();
 
 
-            setSurroundings();
+            setSurroundings(false);
             //Lives.setText(String.valueOf(life));
 
         showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane1);
@@ -192,7 +192,7 @@ public class Controller implements DroneCommander{
 
     public void drawFigure(){
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            setSurroundings();
+            setSurroundings(false);
             //activeFigure = comboBoxFigure.getValue().getCopy();
             activeFigure = new Circle();
             //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
@@ -209,7 +209,7 @@ public class Controller implements DroneCommander{
     //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
     public void moveUp(int xUp, int yUp){
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
-            setSurroundings();
+            setSurroundings(false);
             activeFigure = new Circle();
             x += xUp;
             y += yUp;
@@ -236,6 +236,7 @@ public class Controller implements DroneCommander{
                     e.printStackTrace();
                 }
                 //Lav også mund om, sæt original til rektangel
+               setSurroundings(true);
             }
 
 //Kunne være egen metode, for overskuelighed. Kunne have eget navn og genbruges. Bryde metoderne ned i så små som muligt. Overskuelighed. Man ved hvad metoden gør.
@@ -392,17 +393,24 @@ public class Controller implements DroneCommander{
         clip.start();
     }
 
-    void setSurroundings(){
-        graphicsContext.setFill(Color.YELLOW);
-        graphicsContext.fillOval(-50,-50,150,150);
-        graphicsContext.setFill(Color.BLACK);
-        graphicsContext.fillOval(25,40,10,10);
-        graphicsContext.fillOval(45,30,10,10);
-        graphicsContext.fillArc(37, 15, 30, 60, 210, 150, ArcType.OPEN);
-        graphicsContext.setFill(Color.AQUA);
-        graphicsContext.fillRect(0,600,canvas.getWidth(),canvas.getHeight() - 600); //water
-        graphicsContext.setFill(Color.BISQUE);
-        graphicsContext.fillRect(0,600,canvas.getWidth(),50); //Sand
+    void setSurroundings(boolean hitSun){
+            graphicsContext.setFill(Color.YELLOW);
+            graphicsContext.fillOval(-50, -50, 150, 150);
+            graphicsContext.setFill(Color.BLACK);
+            graphicsContext.fillOval(25, 40, 10, 10);
+            graphicsContext.fillOval(45, 30, 10, 10);
+
+        if(hitSun==true) {
+            graphicsContext.fillArc(37, 15, 30, 60, 210, 150, ArcType.OPEN);
+        } else {
+            graphicsContext.fillRect(34, 53, 25, 4);
+        }
+
+            graphicsContext.setFill(Color.AQUA);
+            graphicsContext.fillRect(0, 600, canvas.getWidth(), canvas.getHeight() - 600); //water
+            graphicsContext.setFill(Color.BISQUE);
+            graphicsContext.fillRect(0, 600, canvas.getWidth(), 50); //Sand
+
 
     }
 
