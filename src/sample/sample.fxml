@@ -83,7 +83,7 @@
                     <children>
                         <VBox prefHeight="300.0" prefWidth="500.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
                             <children>
-                                <Label fx:id="quoteText" prefHeight="250.0" prefWidth="500.0" text="Move Joystick, to move the drone after creation" textAlignment="CENTER" wrapText="true">
+                                <Label fx:id="quoteText" prefHeight="250.0" prefWidth="500.0" text="Press Button to create Drone. Move joystick to move.         Avoid the water. Or don't, idc." textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font name="Arial Italic" size="36.0" />
                                     </font>

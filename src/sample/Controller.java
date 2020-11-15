@@ -224,6 +224,22 @@ public class Controller implements DroneCommander{
                             d = false;
                         }
                     }
+                    break;
+                case "nothing":
+                    graphicsContext.setFill(Color.BLACK);
+                    graphicsContext.setFont(new Font("arial", 20));
+                    graphicsContext.fillText("lol", canvas.getWidth()/2-150, canvas.getHeight()/2);
+                    TimerTask task = new TimerTask(){
+                    @Override
+                            public void run(){
+                        graphicsContext.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+                        setSurroundings(false);
+                        move(0, 0);
+                    }
+                };
+                Timer timer = new Timer();
+                timer.schedule(task,500);
+
 
             }
         }else{
