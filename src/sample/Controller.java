@@ -57,10 +57,10 @@ public class Controller implements DroneCommander{
     //Bruger receiver og sender, for at den skal virke som packet sender.
     private UdpPackageReceiver receiver;
     private DatagramSocket sender;
-    private int x;
-    private int y;
-    private int xEnd = x+200;
-    private int yEnd = y+200;
+    private int x = 150;
+    private int y = 150;
+    private int xEnd = x+100;
+    private int yEnd = y+100;
     private int life = 3;
     private int yup=-5; //Behøver nok ikke variable, bare skrive tallene hvor metoden køres.
     private int wap = 5; //Same
@@ -78,11 +78,11 @@ public class Controller implements DroneCommander{
 
 
             setSurroundings(false);
-            //Lives.setText(String.valueOf(life));
+            quoteTextSource.setVisible(false);
 
-        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane1);
-        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane2);
-        showImage("C:\\Users\\depay\\Downloads\\Job og Muligheder\\WP-Rowing\\DSC_6569.JPG", 1, 0, gridPane3);
+        showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane1);
+        showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane2);
+        showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane3);
 
 
 
@@ -205,9 +205,11 @@ boolean droneDrawn = false;
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
             System.out.println("and end point is: " + activeFigure.end.toString());
             drawActiveFigure(activeFigure);
+            quoteTextSource.setVisible(true);
             droneDrawn = true;
         }
     }
+
     boolean sunHitOnce = false;
     //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
     public void move(int xUp, int yUp){
@@ -372,6 +374,7 @@ boolean gameOver = false;
         graphicsContext.setFont(new Font("arial", 20));
         graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2-150, canvas.getHeight()/2);
         gridPane1.setVisible(false);
+        quoteTextSource.setVisible(false);
 
         try {
             playSound("C:\\Users\\depay\\Downloads\\dead.wav"); //Have helikopter lyd i stedet.
