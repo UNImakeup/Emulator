@@ -47,8 +47,6 @@ public class UdpPackageReceiver implements Runnable { //Den implementerer runnab
                 udpPackages.add(udpPackage);
                 System.out.println(udpPackage.getASCII());
 
-                //String b = "a";
-                //byte[] a = b.getBytes();
                 String msg = new String(packet.getData()).trim();
 
                 commander.droneCommand(msg); //Måske prøve at rykke det op.

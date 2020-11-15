@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -32,31 +31,21 @@ import java.util.TimerTask;
 
 public class Controller implements DroneCommander{
 
-    public Slider sliderPenSize;
-    public ColorPicker colorpicker;
-    public Label labelPenSize;
-    public ComboBox<Figure> comboBoxFigure;
     public Canvas canvas;
     public Label quoteText;
     public Label quoteTextSource;
-    public Button clearCanvasButton;
-    public javafx.scene.layout.HBox HBox;
-    public Label Lives;
-    public AnchorPane anchorPane;
     public GridPane gridPane;
     public GridPane gridPane1;
     public GridPane gridPane2;
     public GridPane gridPane3;
     private GraphicsContext graphicsContext;
 
-    ArrayList<Figure> canvasFigures = new ArrayList<>();
     Figure activeFigure;
 
     private ObservableList<UdpPackage> loggedPackages = FXCollections.observableArrayList();
 
     //Bruger receiver og sender, for at den skal virke som packet sender.
     private UdpPackageReceiver receiver;
-    private DatagramSocket sender;
     private int x = 150;
     private int y = 150;
     private int xEnd = x+100;
@@ -67,12 +56,14 @@ public class Controller implements DroneCommander{
 
     private boolean l = true;
 
+    private boolean droneDrawn = false;
+    private boolean sunHitOnce = false;
+    private boolean gameOver = false;
+
     public void initialize() throws FileNotFoundException {
         // runs when application GUI is ready
-        //Fra drawing on canvas
         System.out.println("ready!");
 
-//        comboBoxFigure.getItems().addAll(new Circle());
 
         graphicsContext = canvas.getGraphicsContext2D();
 
@@ -84,122 +75,17 @@ public class Controller implements DroneCommander{
         showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane2);
         showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane3);
 
-
-
-
         //Fra UDPserver
         //add udp server/reeciver
         receiver = new UdpPackageReceiver(loggedPackages, 6000, this);
         new Thread(receiver).start(); //Starter ss thread. Den skal altså køre i sin egen seperate thread. Serveren og applicationen kører i hver sin thread. For at køre i en thread skal man følge nogle regler, der er beskrevet i en interface der bruges.
-        //receiveUdpMessage();
-
-        /*
-        Task remove = new Task<Void>() {
-            @Override public Void call() {
-                gridPane.getChildren().remove(1);
-                return null;
-            }
-        };
-
-        new Thread(remove).start();
-
-         */
-
-        //create udp sender
-        try {
-            sender = new DatagramSocket();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        } //sende beskeder(?)
-
-
-    }
-//Bruger vi ikke
-    public void updateQuote(String quote, String source)
-    {
-        quoteText.setText(quote);
-        quoteTextSource.setText(source);
-    }
-//Bruger vi ikke
-    public void setPenSize(MouseEvent mouseEvent) {
-        labelPenSize.setText(""+(int)sliderPenSize.getValue());
-    }
-//Tror ikke vi bruger den
-    public void setFigure(ActionEvent actionEvent) {
-
     }
 
-    //Kan slettes, men måske bruge timeren et andet sted.
-    public void canvasClicked(MouseEvent mouseEvent)  {
-        //comboBoxFigure.hide();
-        //Timer T = new Timer();
-
-        //System.out.println(comboBoxFigure.getValue());
-        //if (comboBoxFigure.getValue() != null) {
-        //comboBoxFigure.setValue();
-
-        if (activeFigure == null) {
-            //activeFigure = comboBoxFigure.getValue().getCopy();
-            activeFigure = new Circle();
-            //activeFigure.start = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
-            activeFigure.start = new Point((int) 208, (int) 232);
-            System.out.println("activefigure start point: " + activeFigure.start.toString());
-        } else {
-            activeFigure.end = new Point((int) 342, (int) 365);
-            System.out.println("activeFigure start point is: " + activeFigure.start.toString());
-            System.out.println("and end point is: " + activeFigure.end.toString());
-            //canvasFigures.add(activeFigure);
-            drawActiveFigure(activeFigure);
-            activeFigure = null;
-        }
-        //Thread.sleep(3000);
-        //TimeUnit.SECONDS.sleep(4);
-        //Thread.sleep(3000);
-
-        //graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-
-
-        TimerTask task= new TimerTask() {
-            @Override
-            public void run() {
-                graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-            }
-        };
-        Timer timer = new Timer();
-        timer.schedule(task, 3000);
-
-
-
-
-        //}
-        /*else
-        {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Uuups!");
-            alert.setHeaderText("No figure selected!");
-            alert.setContentText("Choose a figure in the combobox");
-
-
-            alert.showAndWait();
-        }
-
-         */
-
-    }
-
-boolean droneDrawn = false;
     public void drawFigure(){
         if (droneDrawn == false) {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Måske som metode.
             setSurroundings(false);
             activeFigure = new Circle();
-            /*
-            x += 50;
-            y += 50;
-            xEnd += 50;
-            yEnd += 50;
-
-             */
             activeFigure.start = new Point((int) x, (int) y);
             activeFigure.end = new Point((int) xEnd, (int) yEnd);
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
@@ -210,22 +96,9 @@ boolean droneDrawn = false;
         }
     }
 
-    boolean sunHitOnce = false;
     //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
     public void move(int xUp, int yUp){
         if(droneDrawn == true) {
-        /*
-        try {
-            playSound("C:\\Users\\depay\\Downloads\\b.wav"); //Have helikopter lyd i stedet.
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-
-             */
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
             setSurroundings(false);
             activeFigure = new Circle();
@@ -298,14 +171,10 @@ boolean droneDrawn = false;
         }
 
     private void drawActiveFigure(Figure activeFigure) {
-        //graphicsContext.setStroke(colorpicker.getValue());
         graphicsContext.setStroke(Color.TURQUOISE);
         activeFigure.draw(graphicsContext);
     }
 
-
-
-boolean gameOver = false;
     public void droneCommand(String cmd)
     {
         if(life > 0) {
@@ -385,33 +254,6 @@ boolean gameOver = false;
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
-
-        //Lives.setVisible(false);
-        //removeImage(1);
-        //gridPane.setVisible(false);
-    }
-
-    //Kan nok bare slettes.
-    public void clearCanvas(ActionEvent actionEvent) {
-        //graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-        //clearCanvasButton.setCancelButton(true); //Tror bare vi starter med denne. Som en start butyon der sætter gang i emulatoren. Behøver man måske ikke. Ved bare ikke rigtig. Lad os prøve at sout commands her.
-        //HBox.getChildren().remove(clearCanvasButton); //Prøvede at fjerne knappen når man trykker. Kan så stadig have et klik der sætter igang med alt det med at lave den første cirkel, hvor man ved at modtage signaler kan opdatere positionen.
-        //System.out.println(loggedPackages.get(loggedPackages.lastIndexOf(loggedPackages))); //Skal få tilføjet til loggedpackages når vi modtager beskeder tror jeg. Ellers kalde noget bestemt i receiver, så den tegner. Burde nok bare få den til at tegne uden click
-        //drawFigure();
-        //System.out.println(receiver.udpPackages.get(receiver.udpPackages.size()).getASCII());
-        /*
-        if(receiver.udpPackages.get(receiver.udpPackages.size()-1).getASCII() == "b"){
-            //drawFigure();
-            System.out.println("up");
-        }
-*/
-        ObservableList<UdpPackage> a = receiver.udpPackages;
-        String b = new String(a.get(1).getASCII().trim());
-        System.out.println(b + "value");
-
-        if( b.equals(a)){
-            drawFigure();
-        }
     }
 
     void playSound(String soundFile) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
@@ -449,7 +291,6 @@ boolean gameOver = false;
 
         //Setting the image view
         ImageView imageView = new ImageView(image);
-
 
         //Setting the position of the image
         imageView.setX(0);
