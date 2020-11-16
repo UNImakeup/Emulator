@@ -3,15 +3,11 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -23,9 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -113,6 +106,14 @@ public class Controller implements DroneCommander{
             drawActiveFigure(activeFigure);
 
             //kunne være i hit sun metode
+            hitSun();
+
+//Kunne være egen metode, for overskuelighed. Kunne have eget navn og genbruges. Bryde metoderne ned i så små som muligt. Overskuelighed. Man ved hvad metoden gør.
+            hitWater();
+        }
+        }
+
+        public void hitSun(){
 
             if (activeFigure.start.x <= 80 && activeFigure.start.y <= 80 && sunHitOnce == false) {
                 //Laver mund om
@@ -128,15 +129,16 @@ public class Controller implements DroneCommander{
                     e.printStackTrace();
                 }
                 System.out.println("you hit the SUN MY BROTHER!!!!!!!!!!!!!!!!!!");
-                        sunHitOnce = true;
+                sunHitOnce = true;
 
             }
 
             if (activeFigure.start.x > 80 | activeFigure.start.y > 80) {
                 sunHitOnce = false;
             }
+        }
 
-//Kunne være egen metode, for overskuelighed. Kunne have eget navn og genbruges. Bryde metoderne ned i så små som muligt. Overskuelighed. Man ved hvad metoden gør.
+        public void hitWater(){
             if (activeFigure.end.y > 650 && l == true) {
 
                 life -= 1;
@@ -167,7 +169,6 @@ public class Controller implements DroneCommander{
             if (activeFigure.end.y < 650) {
                 l = true;
             }
-        }
         }
 
     private void drawActiveFigure(Figure activeFigure) {
