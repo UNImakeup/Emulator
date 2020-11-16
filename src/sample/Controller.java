@@ -74,7 +74,7 @@ public class Controller implements DroneCommander{
         new Thread(receiver).start(); //Starter ss thread. Den skal altså køre i sin egen seperate thread. Serveren og applicationen kører i hver sin thread. For at køre i en thread skal man følge nogle regler, der er beskrevet i en interface der bruges.
     }
 
-    public void drawFigure(){
+    private void drawFigure(){
         if (droneDrawn == false) {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Måske som metode.
             setSurroundings(false);
@@ -90,7 +90,7 @@ public class Controller implements DroneCommander{
     }
 
     //Rename. Kunne vel egentlig også godt være private. Kan ikke se hvorfor andre metoder skal bruge den.
-    public void move(int xUp, int yUp){
+    private void move(int xUp, int yUp){
         if(droneDrawn == true) {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
             setSurroundings(false);
@@ -113,7 +113,7 @@ public class Controller implements DroneCommander{
         }
         }
 
-        public void hitSun(){
+        private void hitSun(){
 
             if (activeFigure.start.x <= 80 && activeFigure.start.y <= 80 && sunHitOnce == false) {
                 //Laver mund om
@@ -138,7 +138,7 @@ public class Controller implements DroneCommander{
             }
         }
 
-        public void hitWater(){
+        private void hitWater(){
             if (activeFigure.end.y > 650 && l == true) {
 
                 life -= 1;
@@ -252,7 +252,7 @@ public class Controller implements DroneCommander{
         }
     }
 
-    public void gameOver(){
+    private void gameOver(){
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); //Burde bare være clearCanvas metoden.
         graphicsContext.setFill(Color.AQUA);
         graphicsContext.fillRect(0,0, canvas.getWidth(), canvas.getHeight()); //Burde måske spille lyd; you crashed into the water, oh no.
@@ -273,7 +273,7 @@ public class Controller implements DroneCommander{
         }
     }
 
-    void playSound(String soundFile) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+    private void playSound(String soundFile) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         File f = new File(soundFile);
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
         Clip clip = AudioSystem.getClip();
@@ -281,7 +281,7 @@ public class Controller implements DroneCommander{
         clip.start();
     }
 
-    void setSurroundings(boolean hitSun){
+    private void setSurroundings(boolean hitSun){
             graphicsContext.setFill(Color.YELLOW);
             graphicsContext.fillOval(-50, -50, 150, 150);
             graphicsContext.setFill(Color.BLACK);
@@ -302,7 +302,7 @@ public class Controller implements DroneCommander{
 
     }
 
-    void showImage(String img, int r1, int r2, GridPane g) throws FileNotFoundException {
+    private void showImage(String img, int r1, int r2, GridPane g) throws FileNotFoundException {
         Image image = new Image(new FileInputStream(img));
 
 
