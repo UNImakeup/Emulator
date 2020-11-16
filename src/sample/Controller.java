@@ -25,8 +25,8 @@ import java.util.TimerTask;
 public class Controller implements DroneCommander{
 
     public Canvas canvas;
-    public Label quoteText;
-    public Label quoteTextSource;
+    public Label instructionText;
+    public Label connectionText;
     public GridPane gridPane;
     public GridPane gridPane1;
     public GridPane gridPane2;
@@ -62,7 +62,7 @@ public class Controller implements DroneCommander{
 
 
             setSurroundings(false);
-            quoteTextSource.setVisible(false);
+            connectionText.setVisible(false);
 
         showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane1);
         showImage("C:\\Users\\depay\\Downloads\\Interactive Digital Systems\\heart.png", 1, 0, gridPane2);
@@ -84,7 +84,7 @@ public class Controller implements DroneCommander{
             System.out.println("activeFigure start point is: " + activeFigure.start.toString());
             System.out.println("and end point is: " + activeFigure.end.toString());
             drawActiveFigure(activeFigure);
-            quoteTextSource.setVisible(true);
+            connectionText.setVisible(true);
             droneDrawn = true;
         }
     }
@@ -260,7 +260,7 @@ public class Controller implements DroneCommander{
         graphicsContext.setFont(new Font("arial", 20));
         graphicsContext.fillText("oh no, you crashed into the water :((((((", canvas.getWidth()/2-150, canvas.getHeight()/2);
         gridPane1.setVisible(false);
-        quoteTextSource.setVisible(false);
+        connectionText.setVisible(false);
 
         try {
             playSound("C:\\Users\\depay\\Downloads\\dead.wav"); //Have helikopter lyd i stedet.

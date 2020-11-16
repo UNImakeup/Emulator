@@ -83,12 +83,12 @@
                     <children>
                         <VBox prefHeight="300.0" prefWidth="500.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0">
                             <children>
-                                <Label fx:id="quoteText" prefHeight="250.0" prefWidth="500.0" text="Press Button to create Drone. Move joystick to move.         Avoid the water. Or don't, idc." textAlignment="CENTER" wrapText="true">
+                                <Label fx:id="instructionText" prefHeight="250.0" prefWidth="500.0" text="Press Button to create Drone. Move joystick to move.         Avoid the water. Or don't, idc." textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font name="Arial Italic" size="36.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="quoteTextSource" alignment="CENTER_RIGHT" maxHeight="200.0" maxWidth="500.0" text="Connection Active" textAlignment="RIGHT">
+                                <Label fx:id="connectionText" alignment="CENTER_RIGHT" maxHeight="200.0" maxWidth="500.0" text="Connection Active" textAlignment="RIGHT">
                                     <font>
                                         <Font name="Arial Black" size="25.0" />
                                     </font>
